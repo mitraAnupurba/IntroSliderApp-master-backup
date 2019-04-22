@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_1"
+    tools:context=".StudentSignUpActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center">
+
+            <ImageView
+                android:id="@+id/app_logo_imageView"
+                android:layout_width="126dp"
+                android:layout_height="94dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/protiplogo" />
+
+            <TextView
+                android:id="@+id/text_view"
+                android:layout_width="208dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="30dp"
+                android:text="      PROTIP"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/email_address_editText_institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext_white"
+                android:hint="Enter Email"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/password_editText__institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext_white"
+                android:hint="Enter Password"
+                android:inputType="textPassword"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/confirm_password_editText_institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext_white"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/phone_number_editText_institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext_white"
+                android:hint="Enter Phone Number"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/type_editText_institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext_white"
+                android:text="Enter Institute Type"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+            <Spinner
+                android:id="@+id/select_type_spinner_sign_up_institute"
+                android:background="@color/color_inactive_dots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                />
+
+            <EditText
+                android:id="@+id/user_name_editText_institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext_white"
+                android:hint="Enter Institute Name"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+                <EditText
+                    android:id="@+id/address_edittext_institute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:textSize="24dp"
+                    android:hint="enter address"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_edittext_white"
+                    android:layout_gravity="left"
+                    />
+
+
+
+                <Button
+                    android:id="@+id/add_address_edittext_institute"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="ADD ADDRESS"
+                    android:layout_marginLeft="24dp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="right"
+                    android:background="@drawable/custombutton"
+                    />
+
+
+
+            </TableRow>
+
+
+            <GridLayout
+                android:id="@+id/add_items_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:columnCount="1"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:text="SUB BRANCHES : "
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp" />
+
+
+            </GridLayout>
+
+
+
+
+            <Button
+                android:id="@+id/signup_button_institute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/custombutton"
+                android:text="SIGN UP AS INSTITUTE"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="30dp" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar_institute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

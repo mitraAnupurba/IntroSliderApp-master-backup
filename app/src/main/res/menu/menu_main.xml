@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/update"
+        android:title="update account"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/delete"
+        android:title="delete account"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/logout"
+        android:title="logout"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/rate"
+        android:title="rate your institute"
+        app:showAsAction="never"/>
+
+</menu>

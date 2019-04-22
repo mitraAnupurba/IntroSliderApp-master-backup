@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_1"
+    tools:context=".AdminLoginActivity">
+
+
+    <ImageView
+        android:id="@+id/app_logo_imageView"
+        android:layout_width="126dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/protiplogo"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="208dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="PROTIP"
+        android:layout_below="@id/app_logo_imageView"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/admin_login_email_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:layout_below="@id/text_view"
+        android:text="@string/admin_email"
+        android:textAlignment="center"
+        android:textColor="@color/color_white"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/admin_login_password_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:layout_below="@id/admin_login_email_editText"
+        android:text="@string/admin_password"
+        android:textAlignment="center"
+        android:editable="false"
+        android:inputType="textPassword"
+        android:textColor="@color/color_white"
+        android:textSize="24sp"/>
+
+    <Button
+        android:id="@+id/admin_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="LOGIN AS ADMIN"
+
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/admin_login_password_editText"
+        android:background="@drawable/custombutton"/>
+
+
+
+
+</RelativeLayout>

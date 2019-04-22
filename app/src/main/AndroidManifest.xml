@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.introsliderapp">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".InstituteRatingsActivity"></activity>
+        <activity android:name=".InstituteBranchesActivity" />
+        <activity android:name=".InstituteProformaActivity" />
+        <activity android:name=".AdminViewInstitute" />
+        <activity android:name=".AdminViewParent" />
+        <activity android:name=".AdminViewStudent" />
+        <activity android:name=".ManagementInstitutesView" />
+        <activity android:name=".GreIeltaInstitutesView" />
+        <activity android:name=".PlacementTrainingInstituteView" />
+        <activity android:name=".BankExamInstituteView" />
+        <activity android:name=".UpscExamInstituteView" />
+        <activity android:name=".ScienceExamInstitutesView" />
+        <activity android:name=".ComerceInstitutesView" />
+        <activity android:name=".MedicalPGInstituteView" />
+        <activity android:name=".EngineeringInstitutesView" />
+        <activity android:name=".MedicalInstitutesView" />
+        <activity android:name=".IITJEEInstitutesView" />
+        <activity android:name=".AdminProfileActivity" />
+        <activity android:name=".InstituteProfileActivity" />
+        <activity android:name=".InstituteSignUpActivity" />
+        <activity android:name=".ParentProfileActivity" />
+        <activity android:name=".ParentSignUpActivity" />
+        <activity android:name=".StudentProfileActivity" />
+        <activity android:name=".StudentSignUpActivity" />
+        <activity
+            android:name=".SplashScreenActivity"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AppSettings"
+            android:parentActivityName=".WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ExamPortalActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".AdminLoginActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ParentLoginActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".StudentLoginActivity"
+            android:parentActivityName=".WelcomeActivity" />
+        <activity
+            android:name=".InstituteLoginActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".FindInstituteActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".MainActivity" />
+    </application>
+
+</manifest>
