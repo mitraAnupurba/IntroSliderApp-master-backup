@@ -30,6 +30,7 @@ import com.example.introsliderapp.model.MedicalEntranceInstitute;
 import com.example.introsliderapp.model.NeetPGInstitute;
 import com.example.introsliderapp.model.ScienceExamInstitute;
 import com.example.introsliderapp.model.UpscInstitute;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +65,7 @@ public class IITJEEInstitutesView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iitjeeinstitutes_view);
+
 
         toolBar = this.findViewById(R.id.iitjee_toolbar);
 

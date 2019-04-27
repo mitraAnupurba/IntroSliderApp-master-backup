@@ -89,6 +89,8 @@ public class InstituteProformaActivity extends AppCompatActivity {
     //click event for the ratings activity tab.
     public void ratings(View view){
         Intent intent = new Intent(this,InstituteRatingsActivity.class);
+        intent.putExtra("Institute Name",instituteName);
+        intent.putExtra("Institute Type",instituteType);
         startActivity(intent);
         // Toast.makeText(this, "Ratings was clicked", Toast.LENGTH_SHORT).show();
     }

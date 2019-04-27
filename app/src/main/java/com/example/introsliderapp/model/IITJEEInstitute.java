@@ -9,8 +9,10 @@ public class IITJEEInstitute extends Institute implements Comparator<IITJEEInsti
     public IITJEEInstitute() {
     }
 
-    public IITJEEInstitute(String instituteName, String instituteAddress, String emailAddress, String phoneNumber, String instituteType,float avg) {
-        super(instituteName, instituteAddress, emailAddress, phoneNumber, instituteType,avg);
+    public IITJEEInstitute(String instituteName, String instituteAddress, String emailAddress, String phoneNumber,
+                           String instituteType,float avg,int studentIn,int studentOut,float percentage) {
+        super(instituteName, instituteAddress, emailAddress, phoneNumber
+                ,instituteType,avg,studentIn,studentOut,percentage);
     }
 
 

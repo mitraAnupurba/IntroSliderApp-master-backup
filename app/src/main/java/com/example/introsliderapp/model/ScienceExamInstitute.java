@@ -9,8 +9,10 @@ public class ScienceExamInstitute extends Institute implements Comparator<Scienc
     public ScienceExamInstitute() {
     }
 
-    public ScienceExamInstitute(String instituteName, String instituteAddress, String emailAddress, String phoneNumber, String instituteType,float avg) {
-        super(instituteName, instituteAddress, emailAddress, phoneNumber, instituteType,avg);
+    public ScienceExamInstitute(String instituteName, String instituteAddress, String emailAddress, String phoneNumber,
+                                String instituteType,float avg,int studentIn,int studentOut,float percentage) {
+        super(instituteName, instituteAddress, emailAddress, phoneNumber,
+                instituteType,avg,studentIn,studentOut,percentage);
     }
 
 

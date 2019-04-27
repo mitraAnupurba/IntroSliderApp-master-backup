@@ -9,8 +9,10 @@ public class UpscInstitute extends Institute implements Comparator<UpscInstitute
     public UpscInstitute() {
     }
 
-    public UpscInstitute(String instituteName, String instituteAddress, String emailAddress, String phoneNumber, String instituteType,float avg) {
-        super(instituteName, instituteAddress, emailAddress, phoneNumber, instituteType,avg);
+    public UpscInstitute(String instituteName, String instituteAddress, String emailAddress, String phoneNumber,
+                         String instituteType,float avg,int studentIn,int studentOut,float percentage) {
+        super(instituteName, instituteAddress, emailAddress, phoneNumber,
+                instituteType,avg,studentIn,studentOut,percentage);
     }
 
 

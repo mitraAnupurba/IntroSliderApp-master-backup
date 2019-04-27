@@ -20,10 +20,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.introsliderapp.model.Guest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hsalf.smilerating.BaseRating;
 import com.hsalf.smilerating.SmileRating;
 
@@ -33,6 +37,12 @@ public class InstituteRatingsActivity extends AppCompatActivity {
     CircleImageView insitiuteImage;
     boolean isImageFitToScreen;
     TextView about;
+    int ratingByGuest ;
+    String reviewByGuest;
+    private String instituteName;
+    private String instituteType;
+    private EditText reviewByGuestEdittext;
+
     public void fullImage(View view){
         insitiuteImage = (CircleImageView) findViewById(R.id.instituteimage);
         Toast.makeText(this, "Institute image is clicked", Toast.LENGTH_SHORT).show();
@@ -61,6 +71,15 @@ public class InstituteRatingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_institute_ratings);
+
+        //getting intent from the previous activity:
+        Intent intent = getIntent();
+        instituteName = intent.getStringExtra("Institute Name");
+        instituteType = intent.getStringExtra("Institute Type");
+
+        //init view for the edittext for review :
+        reviewByGuestEdittext = InstituteRatingsActivity.this.findViewById(R.id.review_by_guest_edittext);
+
         //dummyText = findViewById(R.id.text_dummy_text);
         AlertDialog.Builder rating = new AlertDialog.Builder(this);
         // View v = getLayoutInflater().inflate(R.layout.activity_ratings,null);
@@ -114,6 +133,26 @@ public class InstituteRatingsActivity extends AppCompatActivity {
                 //dummyText.setText(message);
                 LinearLayout rating = (LinearLayout)findViewById(R.id.rating);
                 rating.setVisibility(View.GONE);
+
+
+                ratingByGuest = smileRating.getRating();
+                reviewByGuest = reviewByGuestEdittext.getText().toString();
+                DatabaseReference mRef
+                        = FirebaseDatabase.getInstance()
+                        .getReference("users").child("guest users")
+                        .child(instituteType).child(instituteName);
+
+
+                //setting values using push id:
+                String key = mRef.push().getKey();
+                Guest guest = new Guest(ratingByGuest,reviewByGuest);
+
+                mRef.child(key).setValue(guest);
+
+                Toast.makeText(InstituteRatingsActivity.this,
+                            "You have syccessfully rated this institute",
+                                Toast.LENGTH_SHORT).show();
+
                 //alertDialog.dismiss();
             }
         });

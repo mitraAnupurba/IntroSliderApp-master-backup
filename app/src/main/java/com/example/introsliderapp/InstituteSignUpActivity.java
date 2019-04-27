@@ -51,7 +51,8 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
         //variable for the edittext's where value is entered
         private EditText emailSignUpInstitute,passwordSignUpInstitute,
                 confirmPasswordSignUpInstitute,phNumberSignUpInstitute,
-                instituteNameSignUpInstitute,instituteAddressSignUpInstitute;
+                instituteNameSignUpInstitute,instituteAddressSignUpInstitute,
+                studentInEdittext,studentOutEdittext;
 
         //variable for buttons:
         private Button signUpButtonInstitute,addAddressButtonInstitute;
@@ -71,6 +72,10 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
     //string variable for storing the institutes data:
     private String email,password,confirmPassword,phNumber,instName,instAddress
                 ,instType,newAddres;
+
+    private int studentIn,studentOut;
+
+    private float percentage;
 
     //context variable to be passed to the object of dynamic view class:
     private Context context;
@@ -114,6 +119,8 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
         addAddressButtonInstitute = this.findViewById(R.id.add_address_edittext_institute);
         spinnerInstitute = this.findViewById(R.id.select_type_spinner_sign_up_institute);
         myLayout = this.findViewById(R.id.add_items_layout);
+        studentInEdittext = this.findViewById(R.id.student_in_editText_institute);
+        studentOutEdittext = this.findViewById(R.id.student_out_editText_institute);
 
     }
 
@@ -170,6 +177,14 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
         phNumber = phNumberSignUpInstitute.getText().toString().trim();
         instName = instituteNameSignUpInstitute.getText().toString().trim();
         instAddress = instituteAddressSignUpInstitute.getText().toString().trim();
+        studentIn = Integer.parseInt(studentInEdittext.getText().toString());
+        studentOut = Integer.parseInt(studentOutEdittext.getText().toString());
+
+        //calculating percentage
+        percentage = (studentOut/studentIn)*100;
+        Toast.makeText(this,
+                Integer.toString(studentIn)+Integer.toString(studentOut)+Float.toString(percentage),Toast.LENGTH_SHORT).show();
+
         if(validate(email,password,confirmPassword,phNumber,
                 instName,instAddress,instType)){
             progressBarInstitute.setVisibility(View.VISIBLE);
@@ -178,7 +193,7 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressBarInstitute.setVisibility(View.GONE);
                     if(task.isSuccessful()){
-                        addInstitutes(instName,instAddress,email,phNumber,instType);
+                        addInstitutes(instName,instAddress,email,phNumber,instType,studentIn,studentOut,percentage);
                         startActivity(new Intent(getApplicationContext(),InstituteProfileActivity.class));
                         Toast.makeText(getApplicationContext(),"User Registered Successfully",Toast.LENGTH_SHORT).show();
                         emailSignUpInstitute.setText("");
@@ -199,80 +214,81 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void addInstitutes(String instName, String instAddress, String email, String phNumber, String instType) {
+    private void addInstitutes(String instName, String instAddress, String email, String phNumber, String instType,int studentIn,int studentOut,float percentage) {
 
         //database reference variable:
         DatabaseReference mRef = FirebaseDatabase.getInstance()
                 .getReference("users").child("institute").child(instType).child(instName);
 
 
+
         switch (instType){
             case "IIT-JEE":
                 IITJEEInstitute inst = new IITJEEInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst);
                 break;
 
             case "Medical Entrance Exams":
                 MedicalEntranceInstitute inst1 = new MedicalEntranceInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst1);
                 break;
 
             case "GATE-IES-ESE":
                 EngineeringExamInstitute inst2 = new EngineeringExamInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst2);
                 break;
 
             case "NEET-PG":
                 NeetPGInstitute inst3 = new NeetPGInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst3);
                 break;
 
             case "Comerce":
                 ComerceExamInstitute inst4 = new ComerceExamInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst4);
                 break;
 
             case "JRF-NET":
                 ScienceExamInstitute inst5 = new ScienceExamInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst5);
                 break;
 
             case "UPSC-ICS":
                 UpscInstitute inst6 = new UpscInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst6);
                 break;
 
             case "BANK-SBI-PO":
                 BankExamInstitute inst7 = new BankExamInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst7);
                 break;
 
             case "College Placements":
                 CollegePlacementTraininhInstitute inst8 =
                         new CollegePlacementTraininhInstitute(instName,instAddress,
-                        email,phNumber,instType,0.0f);
+                        email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst8);
                 break;
 
             case "GRE-IELTS":
                 GREInstitute inst9 =
                         new GREInstitute(instName,instAddress,
-                                email,phNumber,instType,0.0f);
+                                email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst9);
                 break;
 
             case "CAT-MAT":
                 ManagementExamInstitute inst10 =
                         new ManagementExamInstitute(instName,instAddress,
-                                email,phNumber,instType,0.0f);
+                                email,phNumber,instType,0.0f,studentIn,studentOut,percentage);
                 mRef.setValue(inst10);
                 break;
             default:

@@ -23,6 +23,7 @@ import com.example.introsliderapp.model.MedicalEntranceInstitute;
 import com.example.introsliderapp.model.NeetPGInstitute;
 import com.example.introsliderapp.model.ScienceExamInstitute;
 import com.example.introsliderapp.model.UpscInstitute;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     public static String[] managementNames = new String[256];
     public static List<String> institutes = new ArrayList<>();
 
+    FirebaseAnalytics firebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
         Admin.createObject(adminEmail,adminPassword);
         Log.d(TAG,adminEmail+adminPassword);
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "ID");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Anupurba");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Main Activity");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         initLists();
         //checkNull();
@@ -247,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
                     comerceNames[count++] = inst.toString().toUpperCase();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -476,6 +484,11 @@ public class MainActivity extends AppCompatActivity {
 
         initLists();
         getInstituteTypeList();
+
+        Bundle params = new Bundle();
+        firebaseAnalytics.logEvent("Admin_Clicked",params);
+
+
         //checkNull();
         startActivity(new Intent(this,AdminLoginActivity.class));
 

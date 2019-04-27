@@ -10,12 +10,16 @@ public class Institute {
     String instituteName, instituteAddress, emailAddress,phoneNumber,instituteType;
     ArrayList<Float> ratingArray=  new ArrayList<>();
     float avg ;
+    int studentIn;
+    int studentOut;
+    float percentage;
 
     public Institute(){
 
     }
     public Institute(String instituteName,String instituteAddress,
-                     String emailAddress,String phoneNumber,String instituteType,float avg){
+                     String emailAddress,String phoneNumber,String instituteType,
+                     float avg,int studentIn,int studentOut,float percentage){
 
         this.instituteName = instituteName;
         this.instituteAddress =instituteAddress;
@@ -23,6 +27,9 @@ public class Institute {
         this.phoneNumber = phoneNumber;
         this.instituteType = instituteType;
         this.avg = avg;
+        this.studentIn = studentIn;
+        this.studentOut = studentOut;
+        this.percentage = percentage;
     }
 
     public void setRatingArray(float i) {
