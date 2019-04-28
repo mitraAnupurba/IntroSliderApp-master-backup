@@ -2,10 +2,11 @@ package com.example.introsliderapp.model;
 
 public class Parent {
 
-    String userNameParent,emailAddressParent,
+    String userProfilePicture,userNameParent,emailAddressParent,
             phoneNumberParent,instituteNameParent,examNameParent,dobParent;
 
-    public Parent(String userNameStudent, String emailAddressStudent, String phoneNumberStudent, String instituteNameStudent,String examName,String dob) {
+    public Parent(String userProfilePicture,String userNameStudent, String emailAddressStudent, String phoneNumberStudent, String instituteNameStudent,String examName,String dob) {
+        this.userProfilePicture = userProfilePicture;
         this.userNameParent = userNameStudent;
         this.emailAddressParent = emailAddressStudent;
         this.phoneNumberParent = phoneNumberStudent;
@@ -16,7 +17,7 @@ public class Parent {
 
     public Parent() {
     }
-
+    public String getUserProfilePictureStudent(){return  userProfilePicture; }
     public String getUserNameParent() {
         return userNameParent;
     }
