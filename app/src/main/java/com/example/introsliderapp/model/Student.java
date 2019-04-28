@@ -5,11 +5,12 @@ public class Student {
     private float rating;
     private String review;
 
-    String userNameStudent,emailAddressStudent,
+    String userProfilePicture,userNameStudent,emailAddressStudent,
             phoneNumberStudent,instituteNameStudent,examName,dob,
             coachingInstituteName;
 
-    public Student(String userNameStudent, String emailAddressStudent, String phoneNumberStudent, String instituteNameStudent,String examName,String dob,String coachingInstituteName) {
+    public Student(String userProfilePicture,String userNameStudent, String emailAddressStudent, String phoneNumberStudent, String instituteNameStudent,String examName,String dob,String coachingInstituteName) {
+        this.userProfilePicture = userProfilePicture;
         this.userNameStudent = userNameStudent;
         this.emailAddressStudent = emailAddressStudent;
         this.phoneNumberStudent = phoneNumberStudent;
@@ -23,6 +24,7 @@ public class Student {
     public Student() {
     }
 
+    public String getUserProfilePictureStudent(){return  userProfilePicture; }
     public String getUserNameStudent() {
         return userNameStudent;
     }

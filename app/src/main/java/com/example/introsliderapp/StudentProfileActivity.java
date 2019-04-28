@@ -2,6 +2,9 @@ package com.example.introsliderapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.introsliderapp.model.BankExamInstitute;
 import com.example.introsliderapp.model.CollegePlacementTraininhInstitute;
 import com.example.introsliderapp.model.ComerceExamInstitute;
@@ -36,6 +40,8 @@ import com.example.introsliderapp.model.ScienceExamInstitute;
 import com.example.introsliderapp.model.Student;
 import com.example.introsliderapp.model.UpscInstitute;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,9 +50,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.introsliderapp.MainActivity.bankExam;
 import static com.example.introsliderapp.MainActivity.collegePlacementTraininh;
@@ -89,10 +104,11 @@ public class StudentProfileActivity extends AppCompatActivity {
                         ,examNameStudent,coachingNameStudent;
 
     //strings for initial data store and display:
-        private String email,phNumber,userName,dob,instName,examName,coachingName;
+        private String profilePicture,email,phNumber,userName,dob,instName,examName,coachingName;
+    private CircleImageView studentProfilePicture;
 
     //strings for updated value:
-        private String phNumberUpdatedValue,userNameUpdatedValue
+        private String profilePictureUpdate,phNumberUpdatedValue,userNameUpdatedValue
                 ,instNameUpdatedValue,examNameUpdatedValue
             ,coachingNameUpdatedValue;
 
@@ -136,7 +152,7 @@ public class StudentProfileActivity extends AppCompatActivity {
 
     //Function to initialise the view components:
     private void initViews(){
-
+        studentProfilePicture = this.findViewById(R.id.student_profile_picture);
         emailAddressStudent = this.findViewById(R.id.email_address_textView);
         phoneNumberStudent = this.findViewById(R.id.phone_number_textView);
         userNameStudent = this.findViewById(R.id.user_name_textView);
@@ -151,6 +167,48 @@ public class StudentProfileActivity extends AppCompatActivity {
 
     //Function to set the view components, called from the fetchData() function:
     private void setViews(){
+        //String ur = "https://firebasestorage.googleapis.com/v0/b/introsliderapp-master.appspot.com/o/student%2F670317204?alt=media&token=9e872512-35c8-4d2f-acc4-8ee70240a2f0";
+        //Glide.with(getApplicationContext()).load(ur).into(studentProfilePicture);
+        studentProfilePicture.setImageResource(R.drawable.empty_profile);
+        StorageReference gsReference = FirebaseStorage.getInstance().getReferenceFromUrl(profilePicture);
+        gsReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(getApplicationContext()).load(uri).into(studentProfilePicture);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(StudentProfileActivity.this, "Did not download image", Toast.LENGTH_SHORT).show();
+            }
+        });
+        /*try {
+            final File localFile = File.createTempFile("images", "jpg");
+            gsReference.getFile(localFile).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    //studentProfilePicture.setImageURI();
+
+                }
+            }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    studentProfilePicture.setImageBitmap(BitmapFactory.decodeFile(localFile));
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        //Toast.makeText(this, gsReference.toString(), Toast.LENGTH_SHORT).show();
+                //storage.getReferenceFromUrl(profilePicture);
         emailAddressStudent.setText("Email Address : "+email);
         phoneNumberStudent.setText("Phone NUmber : "+phNumber);
         userNameStudent.setText("User Name : "+userName);
@@ -579,7 +637,7 @@ public class StudentProfileActivity extends AppCompatActivity {
 
         DatabaseReference mRef = FirebaseDatabase.getInstance()
                 .getReference("users").child("student").child(uid);
-        Student updatedStudent = new Student(userNameUpdatedValue,email,phNumberUpdatedValue
+        Student updatedStudent = new Student(profilePictureUpdate,userNameUpdatedValue,email,phNumberUpdatedValue
                             ,instNameUpdatedValue,examNameUpdatedValue,dob,coachingNameUpdatedValue);
         mRef.setValue(updatedStudent).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -718,8 +776,6 @@ public class StudentProfileActivity extends AppCompatActivity {
                 studentOfInstitute.put("Exam Preparing For",examName);
                 studentOfInstitute.put("Institute where Studying",instName);
                 //hash map to store the institute, ends here.
-
-
                 //setting a value to the reference:
                 mRef.setValue(studentOfInstitute).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -734,9 +790,6 @@ public class StudentProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-                
-
 
                 Log.d(TAG,"\n inside set positve button Listener \n");
 
@@ -770,6 +823,7 @@ public class StudentProfileActivity extends AppCompatActivity {
                 Student student = dataSnapshot.getValue(Student.class);
 
                 //get values:
+                profilePicture = student.getUserProfilePictureStudent();
                 email = student.getEmailAddressStudent();
                 phNumber = student.getPhoneNumberStudent();
                 userName = student.getUserNameStudent();
