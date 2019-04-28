@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +17,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Gallery;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.introsliderapp.model.BankExamInstitute;
 import com.example.introsliderapp.model.CollegePlacementTraininhInstitute;
 import com.example.introsliderapp.model.ComerceExamInstitute;
@@ -36,6 +38,8 @@ import com.example.introsliderapp.model.ScienceExamInstitute;
 import com.example.introsliderapp.model.Student;
 import com.example.introsliderapp.model.UpscInstitute;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
@@ -47,10 +51,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.introsliderapp.MainActivity.bankExam;
 import static com.example.introsliderapp.MainActivity.collegePlacementTraininh;
@@ -77,6 +87,8 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
         private EditText emailSignUp,passwordSignUp,
                 confirmPasswordSignUp,phoneNumberSignUp,userNameSignUp,
                 instNameSignUp;
+        //Image Button
+        private CircleImageView profilePicture;
         //button variable
         private Button signUpButton;
         //progressbar variable
@@ -122,7 +134,6 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_sign_up);
-
         initViews();
 
         Log.d(TAG,iitjee.toString());
@@ -174,7 +185,7 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
     //function to initialise the views:
     private void initViews(){
 
-
+        profilePicture = (CircleImageView) findViewById(R.id.student_profile_picture);
         emailSignUp = this.findViewById(R.id.email_address_editText);
         passwordSignUp = this.findViewById(R.id.password_editText);
         signUpButton = this.findViewById(R.id.signup_button);
@@ -494,6 +505,28 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
     }
     ////function for setting the date ends here.
 
+    //function to take the imageview
+    private int Gallery_Intent = 2;
+    Uri uri;
+    //Creating intent to select image
+    public void getProfileImage(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,Gallery_Intent);
+    }
+
+    //Getting the image
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==Gallery_Intent&&resultCode==RESULT_OK) {
+
+            uri = data.getData();
+            profilePicture.setImageURI(uri);
+
+        }
+    }
 
     //function for registering the user and storing its data in firebase database:
     private void registerUser(){
@@ -504,6 +537,7 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
         userName = userNameSignUp.getText().toString().trim();
         instituteName = instNameSignUp.getText().toString().trim();
 
+
         if(validate(email,password,confirmPassword,phoneNumber,userName,dob,instituteName)){
             progressBar.setVisibility(View.VISIBLE);
 
@@ -513,9 +547,13 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if(task.isSuccessful()){
-
+                        //Here am trying to input the picture to the file storage
+                        StorageReference imagePath =  FirebaseStorage.getInstance().getReference().child("student").child(uri.getLastPathSegment());
+                                //child("images/"+ UUID.randomUUID().toString());
+                        //= child("student").child(uri.getLastPathSegment());
+                        imagePath.putFile(uri);
                         //here we will store the custom fields in firebase database and start the profile activity
-                        Student student = new Student(userName,email,phoneNumber,instituteName,examName,dob,coachingName);
+                        Student student = new Student(imagePath.toString(),userName,email,phoneNumber,instituteName,examName,dob,coachingName);
                         FirebaseDatabase.getInstance().getReference("users")
                         .child("student").child(FirebaseAuth.getInstance()
                                 .getCurrentUser().getUid()).setValue(student)
@@ -524,7 +562,19 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
                                             progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(StudentSignUpActivity.this,"user Information stored in db",Toast.LENGTH_SHORT).show();
+                                            StorageReference imageUpload =  FirebaseStorage.getInstance().getReference().child("student").child(uri.getLastPathSegment());
+                                            imageUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    Toast.makeText(StudentSignUpActivity.this,"user Information stored in db",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(StudentSignUpActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
                                         }
                                         else{
                                             Toast.makeText(StudentSignUpActivity.this,"error",Toast.LENGTH_SHORT).show();
@@ -576,7 +626,7 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
             return false;
         }
         else if (!password.equals(confirmPassword)) {
-            passwordSignUp.setError("password and confirm password fields must match");
+            passwordSignUp.setError("password andx confirm password fields must match");
             passwordSignUp.requestFocus();
             return false;
         }
@@ -609,6 +659,7 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
 
         }
     }
+
     //method to be implemented for the View.OnlickListener interface ends here.
 
 

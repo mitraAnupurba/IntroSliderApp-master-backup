@@ -38,7 +38,14 @@
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
                 android:textStyle="bold" />
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/student_profile_picture"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/transparent"
+                />
             <TextView
                 android:id="@+id/email_address_textView"
                 android:layout_width="match_parent"
