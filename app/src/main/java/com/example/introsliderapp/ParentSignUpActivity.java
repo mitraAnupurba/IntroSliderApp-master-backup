@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +24,21 @@ import android.widget.Toast;
 
 import com.example.introsliderapp.model.Parent;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ParentSignUpActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
 
@@ -42,6 +51,9 @@ public class ParentSignUpActivity extends AppCompatActivity implements View.OnCl
     private ProgressBar progressBarParent;
     private TextView examNameTextViewParent,dateOfBirthTextViewParent;
     private Spinner spinnerParent;
+
+    //Image Button
+    private CircleImageView profilePicture;
 
     //datepicker variable :
     private DatePickerDialog.OnDateSetListener dateSetListenerParent;
@@ -74,7 +86,7 @@ public class ParentSignUpActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews(){
 
-
+        profilePicture = (CircleImageView) findViewById(R.id.parent_profile_picture);
         emailSignUpParent = this.findViewById(R.id.email_address_editText_parent);
         passwordSignUpParent = this.findViewById(R.id.password_editText_parent);
         signUpButtonParent = this.findViewById(R.id.signup_button_parent);
@@ -129,9 +141,31 @@ public class ParentSignUpActivity extends AppCompatActivity implements View.OnCl
         };
 
     }
+    //function to take the imageview
+    private int Gallery_Intent = 2;
+    Uri uri;
+    //Creating intent to select image
+    public void getProfileImage(View view) {
 
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent,Gallery_Intent);
+    }
+
+    //Getting the image
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==Gallery_Intent&&resultCode==RESULT_OK) {
+
+            uri = data.getData();
+            profilePicture.setImageURI(uri);
+
+        }
+    }
 
     private void registerUser(){
+
         email = emailSignUpParent.getText().toString().trim();
         password = passwordSignUpParent.getText().toString().trim();
         confirmPassword = confirmPasswordSignUpParent.getText().toString().trim();
@@ -146,9 +180,13 @@ public class ParentSignUpActivity extends AppCompatActivity implements View.OnCl
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if(task.isSuccessful()){
-
+                        //Here am trying to input the picture to the file storage
+                        StorageReference imagePath =  FirebaseStorage.getInstance().getReference().child("parents").child(uri.getLastPathSegment());
+                        //child("images/"+ UUID.randomUUID().toString());
+                        //= child("student").child(uri.getLastPathSegment());
+                        imagePath.putFile(uri);
                         //here we will store the custom fields in firebase database and start the profile activity
-                        Parent parent = new Parent(userName,email,phoneNumber,instituteName,examName,dob);
+                        Parent parent = new Parent(imagePath.toString(),userName,email,phoneNumber,instituteName,examName,dob);
                         FirebaseDatabase.getInstance().getReference("users")
                                 .child("parent").child(FirebaseAuth.getInstance()
                                 .getCurrentUser().getUid()).setValue(parent)
@@ -157,7 +195,18 @@ public class ParentSignUpActivity extends AppCompatActivity implements View.OnCl
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
                                             progressBarParent.setVisibility(View.GONE);
-                                            Toast.makeText(ParentSignUpActivity.this,"user Information stored in db",Toast.LENGTH_SHORT).show();
+                                            StorageReference imageUpload =  FirebaseStorage.getInstance().getReference().child("parents").child(uri.getLastPathSegment());
+                                            imageUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    Toast.makeText(ParentSignUpActivity.this,"user Information stored in db",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(ParentSignUpActivity.this, "Image not uploaded", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         }
                                         else{
                                             Toast.makeText(ParentSignUpActivity.this,"error",Toast.LENGTH_SHORT).show();

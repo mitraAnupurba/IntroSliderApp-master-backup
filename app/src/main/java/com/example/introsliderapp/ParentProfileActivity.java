@@ -2,6 +2,7 @@ package com.example.introsliderapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.introsliderapp.model.Parent;
 import com.example.introsliderapp.model.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +32,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ParentProfileActivity extends AppCompatActivity {
 
@@ -48,9 +56,9 @@ public class ParentProfileActivity extends AppCompatActivity {
     private String email,phNumber,userName,dob,instName,examName;
 
     //strings for storing the updated value:
-    private String phNumberUpdatedValue,userNameUpdatedValue
+    private String profilePicture,profilePictureUpdate,phNumberUpdatedValue,userNameUpdatedValue
             ,instNameUpdatedValue,examNameUpdatedValue;
-
+    private CircleImageView parentProfilePicture;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +76,7 @@ public class ParentProfileActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-
+        parentProfilePicture = this.findViewById(R.id.parent_profile_picture);
         emailAddressParent = this.findViewById(R.id.email_address_textView_parent);
         phoneNumberParent = this.findViewById(R.id.phone_number_textView_parent);
         userNameParent = this.findViewById(R.id.user_name_textView_parent);
@@ -79,6 +87,19 @@ public class ParentProfileActivity extends AppCompatActivity {
     }
 
     private void setViews(){
+        parentProfilePicture.setImageResource(R.drawable.empty_profile);
+        StorageReference gsReference = FirebaseStorage.getInstance().getReferenceFromUrl(profilePicture);
+        gsReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(getApplicationContext()).load(uri).into(parentProfilePicture);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ParentProfileActivity.this, "Did not download image", Toast.LENGTH_SHORT).show();
+            }
+        });
         emailAddressParent.setText("Email Address : "+email);
         phoneNumberParent.setText("Phone NUmber : "+phNumber);
         userNameParent.setText("User Name : "+userName);
@@ -273,6 +294,7 @@ public class ParentProfileActivity extends AppCompatActivity {
                 Parent parent = dataSnapshot.getValue(Parent.class);
 
                 //get values:
+                profilePicture = parent.getUserProfilePictureStudent();
                 email = parent.getEmailAddressParent();
                 phNumber = parent.getPhoneNumberParent();
                 userName = parent.getUserNameParent();
