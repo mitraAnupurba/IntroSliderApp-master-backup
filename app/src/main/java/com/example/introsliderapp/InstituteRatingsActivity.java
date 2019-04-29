@@ -26,10 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.introsliderapp.model.Guest;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hsalf.smilerating.BaseRating;
 import com.hsalf.smilerating.SmileRating;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,6 +46,8 @@ public class InstituteRatingsActivity extends AppCompatActivity {
     private String instituteName;
     private String instituteType;
     private EditText reviewByGuestEdittext;
+    List<String> reviewList = new ArrayList<>();
+    List<Integer> ratingList = new ArrayList<>();
 
     public void fullImage(View view){
         insitiuteImage = (CircleImageView) findViewById(R.id.instituteimage);
@@ -146,8 +152,26 @@ public class InstituteRatingsActivity extends AppCompatActivity {
                 //setting values using push id:
                 String key = mRef.push().getKey();
                 Guest guest = new Guest(ratingByGuest,reviewByGuest);
-
+                reviewList.add(reviewByGuest);
+                ratingList.add(ratingByGuest);
                 mRef.child(key).setValue(guest);
+                Bundle params = new Bundle();
+                FirebaseAnalytics.getInstance(InstituteRatingsActivity.this).logEvent("Unregistered_student_rated",params);
+                FirebaseAnalytics.getInstance(InstituteRatingsActivity.this)
+                        .setUserProperty("Rating = ",Integer.toString(ratingByGuest));
+                FirebaseAnalytics.getInstance(InstituteRatingsActivity.this)
+                        .setUserProperty("Review = ",reviewByGuest);
+
+                if(ratingByGuest == 1){
+                    FirebaseAnalytics.getInstance(InstituteRatingsActivity.this).logEvent("Unregistered_student_rated_with_1",params);
+                }
+                else if(ratingByGuest == 2 || ratingByGuest == 3 || ratingByGuest == 4){
+                    FirebaseAnalytics.getInstance(InstituteRatingsActivity.this).logEvent("Unregistered_student_rated_with_medium",params);
+                }
+                else{
+                    FirebaseAnalytics.getInstance(InstituteRatingsActivity.this).logEvent("Unregistered_student_rated_with_5",params);
+                }
+
 
                 Toast.makeText(InstituteRatingsActivity.this,
                             "You have syccessfully rated this institute",

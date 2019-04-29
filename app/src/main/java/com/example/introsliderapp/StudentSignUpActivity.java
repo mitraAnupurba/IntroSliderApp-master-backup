@@ -37,6 +37,7 @@ import com.example.introsliderapp.model.Student;
 import com.example.introsliderapp.model.UpscInstitute;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -97,6 +98,8 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
             instituteName,userName,dob,
     examName,coachingName;
 
+    FirebaseAnalytics analytics;
+
 
     //arraylist variables for different institutes:
     /*public static List<IITJEEInstitute> iitjeeInstitutes = new ArrayList<>();
@@ -133,6 +136,8 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
         Log.d(TAG,collegePlacementTraininh.toString());
         Log.d(TAG,managementExam.toString());
         Log.d(TAG,gre.toString());
+
+        analytics = FirebaseAnalytics.getInstance(this);
 
 
         //taking the array adapter object that converts a dropdown ment
@@ -595,6 +600,8 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
         switch(v.getId()){
             case R.id.signup_button:
                 registerUser();
+                Bundle params = new Bundle();
+                analytics.logEvent("Student_Signed_Up",params);
                 break;
             case R.id.dob_student_signup_textView:
                 setDate();

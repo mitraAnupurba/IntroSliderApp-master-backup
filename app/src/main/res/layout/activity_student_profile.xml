@@ -8,7 +8,7 @@
     tools:context=".StudentProfileActivity">
 
     <include layout="@layout/toolbar"
-        android:id="@+id/toolbar_student_profile"/>
+        android:id="@+id/toolbar_student"/>
 
 
 

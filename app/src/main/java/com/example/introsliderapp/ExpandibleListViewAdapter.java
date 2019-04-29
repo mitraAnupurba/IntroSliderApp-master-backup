@@ -24,8 +24,8 @@ import static com.example.introsliderapp.MainActivity.managementNames;
 public class ExpandibleListViewAdapter extends BaseExpandableListAdapter {
 
 
-    String[] groupNames = new String[institutes.size()];
-    String[][] childNames = {bankNames,managementNames,placementNames,comerceNames,
+    public static String[] groupNames = new String[institutes.size()];
+    public static String[][] childNames = {bankNames,managementNames,placementNames,comerceNames,
             engineeringNames,greNames,iitjeeNames,scienceNames,
             medicalNames,neetPGNames,upscNames};
     Context context;
@@ -92,13 +92,13 @@ public class ExpandibleListViewAdapter extends BaseExpandableListAdapter {
         TextView textView = new TextView(context);
         textView.setText(childNames[groupPosition][childPosition]);
         textView.setPadding(100,0,0,0);
-        textView.setTextSize(18);
-
+        textView.setTextSize(24);
         return textView;
     }
 
     @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+    public boolean isChildSelectable(int groupPosition, int childPosition)
+    {
+        return true;
     }
 }

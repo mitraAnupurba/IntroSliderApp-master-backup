@@ -3,8 +3,8 @@
     package="com.example.introsliderapp">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InstituteRatingsActivity"></activity>
+        <activity android:name=".BarGraphActivity"></activity>
+        <activity android:name=".RadarChartActivity" />
+        <activity android:name=".YearlyPerformanceOfInstitute" />
+        <activity android:name=".ViewAnalysisGraph" />
+        <activity android:name=".InstituteRatingsActivity" />
         <activity android:name=".InstituteBranchesActivity" />
         <activity android:name=".InstituteProformaActivity" />
         <activity android:name=".AdminViewInstitute" />

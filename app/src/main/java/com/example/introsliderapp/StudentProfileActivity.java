@@ -143,7 +143,7 @@ public class StudentProfileActivity extends AppCompatActivity {
         dobStudent = this.findViewById(R.id.dob_student_signup_textView);
         instNameStudent = this.findViewById(R.id.institute_name_textView);
         examNameStudent = this.findViewById(R.id.exam_name_textView);
-        toolbar = this.findViewById(R.id.toolbar_student_profile);
+        toolbar = this.findViewById(R.id.toolbar_student);
         coachingNameStudent = this.findViewById(R.id.coaching_name_textView);
     }
     //Function to initialise the view components ends here.
@@ -164,7 +164,7 @@ public class StudentProfileActivity extends AppCompatActivity {
     //Function to set the view components ends here.
 
 
-    //function to map the menu_main layout to out layout
+    //function to map the menu_main layout to our layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
