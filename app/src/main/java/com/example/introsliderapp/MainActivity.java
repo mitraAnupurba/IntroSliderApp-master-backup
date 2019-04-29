@@ -50,31 +50,82 @@ public class MainActivity extends AppCompatActivity {
 
 
     //arraylist variables for different institutes:
-    public static ArrayList<IITJEEInstitute> iitjee = new ArrayList<>();
-    public static String[] iitjeeNames = new String[256];
-    public static ArrayList<MedicalEntranceInstitute> medicalEntrance = new ArrayList<>();
-    public static String[] medicalNames = new String[256];
-    public static ArrayList<EngineeringExamInstitute> engineeringExam = new ArrayList<>();
-    public static String[] engineeringNames = new String[256];
-    public static ArrayList<NeetPGInstitute> neetPG = new ArrayList<>();
-    public static String[] neetPGNames = new String[256];
-    public static ArrayList<ComerceExamInstitute> comerceExam = new ArrayList<>();
-    public static String[] comerceNames = new String[256];
-    public static ArrayList<ScienceExamInstitute> scienceExam = new ArrayList<>();
-    public static String[] scienceNames = new String[256];
-    public static ArrayList<UpscInstitute> upsc = new ArrayList<>();
-    public static String[] upscNames = new String[256];
-    public static ArrayList<BankExamInstitute> bankExam = new ArrayList<>();
-    public static String[] bankNames = new String[256];
-    public static ArrayList<CollegePlacementTraininhInstitute>
-            collegePlacementTraininh = new ArrayList<>();
-    public static String[] placementNames = new String[256];
-    public static ArrayList<GREInstitute> gre = new ArrayList<>();
-    public static String[] greNames = new String[256];
-    public static ArrayList<ManagementExamInstitute>
-            managementExam = new ArrayList<>();
-    public static String[] managementNames = new String[256];
-    public static List<String> institutes = new ArrayList<>();
+        //IITJEE list:
+            public static ArrayList<IITJEEInstitute> iitjee = new ArrayList<>();
+        //IITJEE NAMES LIST
+            public static String[] iitjeeNames = new String[256];
+        //medical list
+            public static ArrayList<MedicalEntranceInstitute> medicalEntrance = new ArrayList<>();
+        //medical names list
+            public static String[] medicalNames = new String[256];
+        //engineering list
+            public static ArrayList<EngineeringExamInstitute> engineeringExam = new ArrayList<>();
+        //engineering names list
+            public static String[] engineeringNames = new String[256];
+        //neet pg list
+            public static ArrayList<NeetPGInstitute> neetPG = new ArrayList<>();
+        //neet pg names list
+            public static String[] neetPGNames = new String[256];
+        //comerce list
+            public static ArrayList<ComerceExamInstitute> comerceExam = new ArrayList<>();
+        //comerce names list
+            public static String[] comerceNames = new String[256];
+       //science list
+            public static ArrayList<ScienceExamInstitute> scienceExam = new ArrayList<>();
+       //science names list
+            public static String[] scienceNames = new String[256];
+        //upsc list
+            public static ArrayList<UpscInstitute> upsc = new ArrayList<>();
+        //upsc names list:
+            public static String[] upscNames = new String[256];
+        //bank list
+            public static ArrayList<BankExamInstitute> bankExam = new ArrayList<>();
+        //bank names list:
+            public static String[] bankNames = new String[256];
+        //college placements list
+            public static ArrayList<CollegePlacementTraininhInstitute>
+                    collegePlacementTraininh = new ArrayList<>();
+        //college placement names list
+            public static String[] placementNames = new String[256];
+        //gre list:
+            public static ArrayList<GREInstitute> gre = new ArrayList<>();
+        //gre names list:
+            public static String[] greNames = new String[256];
+        //management list:
+            public static ArrayList<ManagementExamInstitute>
+                    managementExam = new ArrayList<>();
+        //management names list:
+            public static String[] managementNames = new String[256];
+        //list of institutes:
+            public static List<String> institutes = new ArrayList<>();
+
+    //array list for storing the average of institutes under a specific type:
+        public static ArrayList<Float> iitjeeAvg = new ArrayList<>();
+        public static ArrayList<Float> medicalAvg = new ArrayList<>();
+        public static ArrayList<Float> engineeringAvg = new ArrayList<>();
+        public static ArrayList<Float> neetPGAvg = new ArrayList<>();
+        public static ArrayList<Float> comerceAvg = new ArrayList<>();
+        public static ArrayList<Float> bankAvg = new ArrayList<>();
+        public static ArrayList<Float> scienceAvg = new ArrayList<>();
+        public static ArrayList<Float> upscAvg = new ArrayList<>();
+        public static ArrayList<Float> greAvg = new ArrayList<>();
+        public static ArrayList<Float> placementAvg = new ArrayList<>();
+        public static ArrayList<Float> managementAvg = new ArrayList<>();
+
+
+    //Array list for storing the percentage information:
+
+        public static ArrayList<Float> iitjeePercent = new ArrayList<>();
+        public static ArrayList<Float> medicalPercent = new ArrayList<>();
+        public static ArrayList<Float> engineeringPercent = new ArrayList<>();
+        public static ArrayList<Float> neetPGPercent = new ArrayList<>();
+        public static ArrayList<Float> comercePercent = new ArrayList<>();
+        public static ArrayList<Float> bankPercent = new ArrayList<>();
+        public static ArrayList<Float> sciencePercent = new ArrayList<>();
+        public static ArrayList<Float> upscPercent = new ArrayList<>();
+        public static ArrayList<Float> grePercent = new ArrayList<>();
+        public static ArrayList<Float> placementPercent = new ArrayList<>();
+        public static ArrayList<Float> managementPercent = new ArrayList<>();
 
     FirebaseAnalytics firebaseAnalytics;
 
@@ -115,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,gre.toString());
     }
 
+    //method to get the list of all the different types of institutes:
     private void getInstituteTypeList(){
 
         DatabaseReference dRef = FirebaseDatabase.getInstance()
@@ -148,8 +200,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //method to get the list of all the different types of institutes ends here:
 
 
+    //method to get the list of all the institutes under a specific type:
     private void initLists(){
 
 
@@ -162,9 +216,21 @@ public class MainActivity extends AppCompatActivity {
                 iitjee.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage ;
                     IITJEEInstitute inst = snapshot.getValue(IITJEEInstitute.class);
                     iitjee.add(inst);
                     iitjeeNames[count++] = inst.toString().toUpperCase();
+                    iitjeeAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = (float)((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        iitjeePercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -183,10 +249,23 @@ public class MainActivity extends AppCompatActivity {
                 medicalEntrance.clear();
                 int count = 0;
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    float percentage;
                     MedicalEntranceInstitute inst =
                             snapshot.getValue(MedicalEntranceInstitute.class);
                     medicalEntrance.add(inst);
                     medicalNames[count++] = inst.toString().toUpperCase();
+                    medicalAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        medicalPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
+
 
                 }
             }
@@ -206,10 +285,22 @@ public class MainActivity extends AppCompatActivity {
                 engineeringExam.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     EngineeringExamInstitute inst =
                             snapshot.getValue(EngineeringExamInstitute.class);
                     engineeringExam.add(inst);
                     engineeringNames[count++] = inst.toString().toUpperCase();
+                    engineeringAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        engineeringPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -228,10 +319,23 @@ public class MainActivity extends AppCompatActivity {
                 neetPG.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     NeetPGInstitute inst =
                             snapshot.getValue(NeetPGInstitute.class);
                     neetPG.add(inst);
                     neetPGNames[count++] = inst.toString().toUpperCase();
+                    neetPGAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        neetPGPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -250,10 +354,22 @@ public class MainActivity extends AppCompatActivity {
                 comerceExam.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     ComerceExamInstitute inst =
                             snapshot.getValue(ComerceExamInstitute.class);
                     comerceExam.add(inst);
                     comerceNames[count++] = inst.toString().toUpperCase();
+                    comerceAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        comercePercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
             @Override
@@ -271,10 +387,22 @@ public class MainActivity extends AppCompatActivity {
                 scienceExam.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     ScienceExamInstitute inst =
                             snapshot.getValue(ScienceExamInstitute.class);
                     scienceExam.add(inst);
                     scienceNames[count++] = inst.toString().toUpperCase();
+                    scienceAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        sciencePercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -293,10 +421,22 @@ public class MainActivity extends AppCompatActivity {
                 upsc.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     UpscInstitute inst =
                             snapshot.getValue(UpscInstitute.class);
                     upsc.add(inst);
                     upscNames[count++] = inst.toString().toUpperCase();
+                    upscAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        upscPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -315,10 +455,22 @@ public class MainActivity extends AppCompatActivity {
                 bankExam.clear();
                 int count =0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     BankExamInstitute inst =
                             snapshot.getValue(BankExamInstitute.class);
                     bankExam.add(inst);
                     bankNames[count++] = inst.toString().toUpperCase();
+                    bankAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        bankPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -337,10 +489,22 @@ public class MainActivity extends AppCompatActivity {
                 collegePlacementTraininh.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     CollegePlacementTraininhInstitute inst =
                             snapshot.getValue(CollegePlacementTraininhInstitute.class);
                     collegePlacementTraininh.add(inst);
                     placementNames[count++] = inst.toString().toUpperCase();
+                    placementAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        placementPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -359,10 +523,22 @@ public class MainActivity extends AppCompatActivity {
                 gre.clear();
                 int count =0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     GREInstitute inst =
                             snapshot.getValue(GREInstitute.class);
                     gre.add(inst);
                     greNames[count++] = inst.toString().toUpperCase();
+                    greAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        grePercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
 
                 }
             }
@@ -382,11 +558,22 @@ public class MainActivity extends AppCompatActivity {
                 managementExam.clear();
                 int count = 0;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    float percentage;
                     ManagementExamInstitute inst =
                             snapshot.getValue(ManagementExamInstitute.class);
                     managementExam.add(inst);
                     managementNames[count++] = inst.toString().toUpperCase();
-
+                    managementAvg.add(inst.getAvg());
+                    try{
+                        Log.d(TAG,"student in = "+Integer.toString(inst.getStudentIn()));
+                        Log.d(TAG,"Student out = "+inst.getStudentOut());
+                        percentage = ((float)inst.getStudentOut()/(float)inst.getStudentIn())*100;
+                        managementPercent.add(percentage);
+                        Log.d(TAG,"Percentage = "+percentage);
+                    }
+                    catch(ArithmeticException e){
+                        Log.d(TAG,"Division by 0");
+                    }
                 }
             }
 
@@ -399,19 +586,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    //method to get the list of all the institutes under a specific type ends here:
 
-    /*private void checkNull(){
-
-
-        //for IITJEE institutes:
-        for(int i=0;i<iitjee.size();i++){
-            if(iitjee.get(i) == null){
-                iitjee.remove(i);
-            }
-        }
-        Log.d(TAG,iitjee.toString());
-
-    }*/
 
     //method implementation for the load slides button:
     public void loadSlides(View view) {
@@ -441,6 +617,33 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,collegePlacementTraininh.toString());
         Log.d(TAG,managementExam.toString());
         Log.d(TAG,gre.toString());
+
+
+        Log.d(TAG,"diaplay average: ");
+        Log.d(TAG,iitjeeAvg.toString());
+        Log.d(TAG,medicalAvg.toString());
+        Log.d(TAG,engineeringAvg.toString());
+        Log.d(TAG,neetPGAvg.toString());
+        Log.d(TAG,scienceAvg.toString());
+        Log.d(TAG,comerceAvg.toString());
+        Log.d(TAG,upscAvg.toString());
+        Log.d(TAG,bankAvg.toString());
+        Log.d(TAG,placementAvg.toString());
+        Log.d(TAG,greAvg.toString());
+        Log.d(TAG,managementAvg.toString());
+
+        Log.d(TAG,"diaplay percentage: ");
+        Log.d(TAG,iitjeePercent.toString());
+        Log.d(TAG,medicalPercent.toString());
+        Log.d(TAG,engineeringPercent.toString());
+        Log.d(TAG,neetPGPercent.toString());
+        Log.d(TAG,sciencePercent.toString());
+        Log.d(TAG,comercePercent.toString());
+        Log.d(TAG,upscPercent.toString());
+        Log.d(TAG,bankPercent.toString());
+        Log.d(TAG,placementPercent.toString());
+        Log.d(TAG,grePercent.toString());
+        Log.d(TAG,managementPercent.toString());
 
         startActivity(new Intent(this,FindInstituteActivity.class));
 

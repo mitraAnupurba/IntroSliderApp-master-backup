@@ -33,6 +33,7 @@ import com.example.introsliderapp.model.ScienceExamInstitute;
 import com.example.introsliderapp.model.UpscInstitute;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -338,6 +339,9 @@ public class InstituteSignUpActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.signup_button_institute:
                 registerUser();
+                Bundle params = new Bundle();
+                FirebaseAnalytics.getInstance(InstituteSignUpActivity.this)
+                        .logEvent("Institute_signed_up",params);
                 break;
         }
 

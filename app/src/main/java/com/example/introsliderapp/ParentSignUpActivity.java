@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -271,6 +272,9 @@ public class ParentSignUpActivity extends AppCompatActivity implements View.OnCl
         switch(v.getId()){
             case R.id.signup_button_parent:
                 registerUser();
+                Bundle params = new Bundle();
+                FirebaseAnalytics.getInstance(ParentSignUpActivity.this)
+                        .logEvent("Parent_signed_up",params);
                 break;
             case R.id.dob_signup_textView_parent:
                 setDate();

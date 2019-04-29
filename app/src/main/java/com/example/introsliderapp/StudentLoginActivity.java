@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -98,6 +99,10 @@ public class StudentLoginActivity extends AppCompatActivity {
 
         if(mAuth.getCurrentUser() != null){
 
+            Bundle params = new Bundle();
+            FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(StudentLoginActivity.this);
+            analytics.logEvent("Student_logged_in_first_time",params);
+            analytics.setUserProperty("User_id",mAuth.getCurrentUser().getUid());
             startActivity(new Intent(getApplicationContext(),StudentProfileActivity.class));
         }
     }

@@ -101,5 +101,19 @@ public class Institute {
     }
 
 
+    public int getStudentIn() {
+        return studentIn;
+    }
 
+    public void setStudentIn(int studentIn) {
+        this.studentIn = studentIn;
+    }
+
+    public int getStudentOut() {
+        return studentOut;
+    }
+
+    public void setStudentOut(int studentOut) {
+        this.studentOut = studentOut;
+    }
 }
