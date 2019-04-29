@@ -112,7 +112,6 @@ public class StudentSignUpActivity extends AppCompatActivity implements View.OnC
 
     FirebaseAnalytics analytics;
 
-
     //arraylist variables for different institutes:
     /*public static List<IITJEEInstitute> iitjeeInstitutes = new ArrayList<>();
     public static List<MedicalEntranceInstitute> medicalEntranceInstitutes = new ArrayList<>();
